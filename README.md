@@ -16,7 +16,7 @@ A Sketch plugin for skewing (or shearing) shapes horizontally or vertically.
 
 #### Install from repo
 
-1. Download the latest *.zip and unzip
+1. <a href="https://github.com/mheesakkers/sketch-plugin-skew/archive/master.zip">Download the latest *.zip and unzip</a>
 2. Double click on the .sketchplugin
 3. If all went well Sketch just installed the plugin!`
 
