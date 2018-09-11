@@ -1,0 +1,33 @@
+{
+  "author" : "Misha Heesakkers",
+  "identifier" : "com.mishaheesakkers.sketch.skew",
+  "version" : "1.0",
+  "description" : "Skew selected shapes horizontally or vertically",
+  "authorEmail" : "misha.heesakkers@gmail.com",
+  "name" : "Skew",
+  "icon" : "icon-skew-horizontal.png",
+  "commands" : [
+    {
+      "script" : "script.cocoascript",
+      "name" : "Skew horizontally...",
+      "handler" : "skewHorizontalHandler",
+      "identifier" : "skew-horizontally",
+      "icon" : "icon-skew-horizontal.png"
+    },
+    {
+      "script" : "script.cocoascript",
+      "name" : "Skew vertically...",
+      "handler" : "skewVerticalHandler",
+      "identifier" : "skew-vertically",
+      "icon" : "icon-skew-vertical.png"
+    } 
+
+  ],
+  "menu" : {
+    "isRoot": false,
+    "items" : [
+      "skew-horizontally",
+      "skew-vertically"
+    ]
+  }
+}

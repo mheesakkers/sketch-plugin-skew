@@ -1,0 +1,98 @@
+var onRun = function(context, skewHorizontal = true) {
+	var sketch = require('sketch')
+  var UI = require('sketch/ui')
+  var selection = sketch.getSelectedDocument().selectedLayers
+
+  var doc = context.document;
+  var inputSkewAngle = parseFloat( [doc askForUserInput:"Define a skew angle (Range: -90 - 90)?" initialValue:"10"] ).toFixed(1)
+  inputSkewAngle = checkInputSkewAngle(inputSkewAngle)
+
+  if (selection.length > 0) {
+
+    // Loop through selection and get all shape layers
+    var shapeLayers = [];
+    selection.forEach( function iterate(layer) {
+      layer.type === 'Shape' && shapeLayers.push(layer);
+      layer.type === 'Text' && UI.message('This plugins works only for shape layers.')
+      layer.type === 'Image' && UI.message('This plugins works only for shape layers.')
+      if (layer.layers) {
+        layer.layers.forEach(iterate)
+      }
+    });
+
+    // Loop over shape layers
+    shapeLayers.forEach(layer => {
+    	const shapeGroup = layer.sketchObject
+      shapeGroup.flatten() // Flatten the compound path before doing skew transforms
+      const shapeGroupLayers = shapeGroup.layers()
+
+      shapeGroupLayers.forEach(shape => {
+        var points = shape.points()
+
+        if (points.length > 0) {
+        	points.forEach(p => {
+        		p.point = skew( p.point(), inputSkewAngle, skewHorizontal)
+        	})
+        }
+      })
+
+      shapeGroup.flatten()
+
+      // Display message
+      if (skewHorizontal) {
+        UI.message('Skewed horizontally by ' + inputSkewAngle + '°')        
+      } else {
+        UI.message('Skewed vertically by ' + inputSkewAngle + '°')  
+      }
+
+    })
+
+  } else {
+    UI.message('No shape layers selected.')
+  }    
+}
+
+// Skew functionality
+function skew (point, angle, horizontal = true) {
+  const skewedX = point.x + point.y * (1 / Math.tan( -toRadians( 270.0 - angle)) ) // 270 degrees is the base angle  & I invert the radians to match Illustrators orientation
+  const skewedY = point.y + point.x * (1 / Math.tan( -toRadians( 270.0 - angle)) )
+
+  if (horizontal) {
+    return { x: skewedX, y: point.y } // Return horizontal skew
+  } else {
+    return { x: point.x, y: skewedY } // Return vertical skew
+  }
+}
+
+function checkInputSkewAngle (angle) {
+  var UI = require('sketch/ui')
+
+  if (angle < -90) {
+    angle = -90
+    UI.message('Skew angle is set to -90, the min limit to skew')
+  }
+  if (angle > 90) {
+    angle = 90
+    UI.message('Skew angle is set to 90, the max limit to skew')
+  }
+
+  return angle;
+}
+
+// Helpers // 
+function toRadians (angle) {
+  return angle * (Math.PI / 180);
+}
+
+// Command handlers
+var skewHorizontalHandler = function (context) {
+  onRun(context, true)
+}
+
+var skewVerticalHandler = function (context) {
+  onRun(context, false)
+}
+
+// Doesn't work with:
+// 1. Bezier points give wrong results
+// 2. Multiple shapes
