@@ -5,7 +5,6 @@
 A Sketch plugin for skewing (or shearing) shapes horizontally or vertically.
 
 <img src="https://github.com/mheesakkers/sketch-plugin-skew/blob/master/screengrab.gif?raw=true" alt="img" style="max-width:100%;">
----
 
 ## To do
 
