@@ -1,4 +1,4 @@
-<img height="128" width="128" src="https://github.com/mheesakkers/sketch-plugin-skew/blob/master/Skew.sketchplugin/Contents/Resources/icon-skew-horizontal.png">
+<img height="128" width="128" src="https://github.com/mheesakkers/sketch-plugin-skew/blob/master/Skew.sketchplugin/Contents/Resources/icon-main.png">
 
 # Sketch Plugin: Skew!
 
