@@ -2,10 +2,11 @@
   "author" : "Misha Heesakkers",
   "identifier" : "com.mishaheesakkers.sketch.skew",
   "version" : "1.0",
-  "description" : "Skew selected shapes horizontally or vertically",
+  "description" : "Skew (or shear) shapes horizontally or vertically.",
   "authorEmail" : "misha.heesakkers@gmail.com",
-  "name" : "Skew",
+  "name" : "Skew!",
   "icon" : "icon-skew-horizontal.png",
+  "appcast" : "https://raw.githubusercontent.com/mheesakkers/sketch-plugin-skew/master/appcast.xml",
   "commands" : [
     {
       "script" : "script.cocoascript",
