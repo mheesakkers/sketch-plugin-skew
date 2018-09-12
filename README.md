@@ -1,8 +1,14 @@
-<img height="128" width="128" src="https://github.com/mheesakkers/sketch-plugin-skew/blob/master/Skew.sketchplugin/Contents/Resources/icon-main.png">
+<center>
+	<img height="128" width="128" src="https://github.com/mheesakkers/sketch-plugin-skew/blob/master/Skew.sketchplugin/Contents/Resources/icon-main.png">
+</center>
 
+<center>
 # Sketch Plugin: Skew!
+</center>
 
+<center>
 A Sketch plugin for skewing (or shearing) shapes horizontally or vertically.
+</center>
 
 <img src="https://github.com/mheesakkers/sketch-plugin-skew/blob/master/screengrab.gif?raw=true" alt="img" style="max-width:100%;">
 
