@@ -8,7 +8,7 @@ A Sketch plugin for skewing (or shearing) shapes horizontally or vertically.
 
 ## To do
 
-- Update screengrab
+- Skewing other shapes than rectangles aren't accurately skewed by given degrees
 - Functionality for skewing beziers
 
 ## Installation
