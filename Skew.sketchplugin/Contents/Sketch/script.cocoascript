@@ -1,9 +1,9 @@
 var onRun = function(context, skewHorizontal = true) {
 	var sketch = require('sketch')
   var UI = require('sketch/ui')
+  var doc = context.document
   var selection = sketch.getSelectedDocument().selectedLayers
 
-  var doc = context.document;
   var inputSkewAngle = parseFloat( [doc askForUserInput:"Define a skew angle (Range: -90 - 90)?" initialValue:"10"] ).toFixed(1)
   inputSkewAngle = checkInputSkewAngle(inputSkewAngle)
 
@@ -12,7 +12,7 @@ var onRun = function(context, skewHorizontal = true) {
     // Loop through selection and get all shape layers
     var shapeLayers = [];
     selection.forEach( function iterate(layer) {
-      layer.type === 'Shape' && shapeLayers.push(layer);
+      layer.type === 'ShapePath' && shapeLayers.push(layer.sketchObject);
       layer.type === 'Text' && UI.message('This plugins works only for shape layers.')
       layer.type === 'Image' && UI.message('This plugins works only for shape layers.')
       if (layer.layers) {
@@ -22,21 +22,16 @@ var onRun = function(context, skewHorizontal = true) {
 
     // Loop over shape layers
     shapeLayers.forEach(layer => {
-    	const shapeGroup = layer.sketchObject
-      shapeGroup.flatten() // Flatten the compound path before doing skew transforms
-      const shapeGroupLayers = shapeGroup.layers()
+      const shape = layer.isMemberOfClass(MSShapeGroup) ? layer.layers()[0] : layer
+      shape.flatten()
+      var points = shape.points()
 
-      shapeGroupLayers.forEach(shape => {
-        var points = shape.points()
-
-        if (points.length > 0) {
-        	points.forEach(p => {
-        		p.point = skew( p.point(), inputSkewAngle, skewHorizontal)
-        	})
-        }
-      })
-
-      shapeGroup.flatten()
+      if (points.length > 0) {
+      	points.forEach(p => {
+      		p.point = skew( p.point(), inputSkewAngle, skewHorizontal)
+      	})
+      }
+      shape.flatten()
 
       // Display message
       if (skewHorizontal) {
