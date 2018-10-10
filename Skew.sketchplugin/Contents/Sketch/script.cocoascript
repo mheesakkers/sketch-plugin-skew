@@ -24,21 +24,31 @@ var onRun = function(context, skewHorizontal = true) {
     shapeLayers.forEach(layer => {
       const shape = layer.isMemberOfClass(MSShapeGroup) ? layer.layers()[0] : layer
       shape.flatten()
+      
+      var shapeWidth = shape.absoluteRect().width()
+      var shapeHeight = shape.absoluteRect().height()
       var points = shape.points()
 
       if (points.length > 0) {
-      	points.forEach(p => {
-      		p.point = skew( p.point(), inputSkewAngle, skewHorizontal)
-      	})
+        if (skewHorizontal) {
+          const skewAngleFactor = shapeHeight / shapeWidth
+          log(skewAngleFactor)
+          points.forEach(p => {
+            p.point = skewX( p.point(), inputSkewAngle, skewAngleFactor)
+          })
+          UI.message('Skewed horizontally by ' + inputSkewAngle + '°')      
+        } else {
+          const skewAngleFactor = shapeWidth / shapeHeight
+          log(skewAngleFactor)
+        	points.forEach(p => {
+            const skewAngleFactor = shapeWidth / shapeHeight
+        		p.point = skewY( p.point(), inputSkewAngle, skewAngleFactor)
+        	})
+          UI.message('Skewed vertically by ' + inputSkewAngle + '°')  
+        }
       }
-      shape.flatten()
 
-      // Display message
-      if (skewHorizontal) {
-        UI.message('Skewed horizontally by ' + inputSkewAngle + '°')        
-      } else {
-        UI.message('Skewed vertically by ' + inputSkewAngle + '°')  
-      }
+      shape.flatten()
 
     })
 
@@ -48,27 +58,27 @@ var onRun = function(context, skewHorizontal = true) {
 }
 
 // Skew functionality
-function skew (point, angle, horizontal = true) {
-  const skewedX = point.x + point.y * (1 / Math.tan( -toRadians( 270.0 - angle)) ) // 270 degrees is the base angle  & I invert the radians to match Illustrators orientation
-  const skewedY = point.y + point.x * (1 / Math.tan( -toRadians( 270.0 - angle)) )
+function skewX (point, angle, factor) {
+  const skewedX = point.x + point.y * (1 / Math.tan( -toRadians( 270.0 - angle)) ) * factor // 270 degrees is the base angle  & I invert the radians to match Illustrators orientation
+  return { x: skewedX, y: point.y } // Return horizontal skew
+}
 
-  if (horizontal) {
-    return { x: skewedX, y: point.y } // Return horizontal skew
-  } else {
-    return { x: point.x, y: skewedY } // Return vertical skew
-  }
+function skewY (point, angle, factor) {
+  const skewedY = point.y + point.x * (1 / Math.tan( toRadians( 270.0 - angle)) ) * factor
+  return { x: point.x, y: skewedY } // Return vertical skew
 }
 
 function checkInputSkewAngle (angle) {
   var UI = require('sketch/ui')
+  var maxmin = 89
 
-  if (angle < -90) {
-    angle = -90
-    UI.message('Skew angle is set to -90, the min limit to skew')
+  if (angle < -maxmin) {
+    angle = -maxmin
+    UI.message('Skew angle is set to -' + maxmin + ', the min limit to skew. Otherwise the artwork gets too big.')
   }
-  if (angle > 90) {
-    angle = 90
-    UI.message('Skew angle is set to 90, the max limit to skew')
+  if (angle > maxmin) {
+    angle = maxmin
+    UI.message('Skew angle is set to ' + maxmin + ', the max limit to skew. Otherwise the artwork gets too big.')
   }
 
   return angle;
