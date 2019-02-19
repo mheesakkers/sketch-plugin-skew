@@ -1,7 +1,7 @@
 {
   "author" : "Misha Heesakkers",
   "identifier" : "com.mishaheesakkers.sketch.skew",
-  "version" : "2.0",
+  "version" : "3.0",
   "description" : "Skew (or shear) shapes horizontally or vertically.",
   "authorEmail" : "misha.heesakkers@gmail.com",
   "name" : "Skew!",

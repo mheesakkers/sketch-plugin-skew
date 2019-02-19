@@ -6,6 +6,17 @@
     <description>A Sketch plugin for skewing (or shearing) shapes horizontally or vertically.</description>
     <language>en</language>
     <item>
+      <title>Version 3.0</title>
+      <description>
+        <![CDATA[
+            <ul>
+              <li>Made compatible with Sketch v53.1</li>
+            </ul>
+          ]]>
+      </description>
+      <enclosure url="https://github.com/mheesakkers/sketch-plugin-skew/archive/master.zip" sparkle:version="3.0"/>
+    </item>
+    <item>
       <title>Version 2.0</title>
       <description>
         <![CDATA[

@@ -18,12 +18,13 @@ var onRun = function(context, skewHorizontal = true) {
       if (layer.layers) {
         layer.layers.forEach(iterate)
       }
+      // log(layer.type);
     });
 
     // Loop over shape layers
     shapeLayers.forEach(layer => {
       const shape = layer.isMemberOfClass(MSShapeGroup) ? layer.layers()[0] : layer
-      shape.flatten()
+      // shape.flattenedLayer();
       
       var shapeWidth = shape.absoluteRect().width()
       var shapeHeight = shape.absoluteRect().height()
@@ -32,14 +33,14 @@ var onRun = function(context, skewHorizontal = true) {
       if (points.length > 0) {
         if (skewHorizontal) {
           const skewAngleFactor = shapeHeight / shapeWidth
-          log(skewAngleFactor)
+          // log(skewAngleFactor)
           points.forEach(p => {
             p.point = skewX( p.point(), inputSkewAngle, skewAngleFactor)
           })
           UI.message('Skewed horizontally by ' + inputSkewAngle + '°')      
         } else {
           const skewAngleFactor = shapeWidth / shapeHeight
-          log(skewAngleFactor)
+          // log(skewAngleFactor)
         	points.forEach(p => {
             const skewAngleFactor = shapeWidth / shapeHeight
         		p.point = skewY( p.point(), inputSkewAngle, skewAngleFactor)
@@ -48,7 +49,14 @@ var onRun = function(context, skewHorizontal = true) {
         }
       }
 
-      shape.flatten()
+      var flattened = shape.flattenedLayer();   // Converts custom shapes into MSShapePathLayer
+      
+      var flattener = MSLayerFlattener.alloc().init();
+      flattener.flattenLayer_options(flattened, 2);// includes removing duplicate points
+            
+      var group = shape.parentGroup();
+      group.insertLayer_afterLayer(flattened, shape);
+      group.removeLayer(shape);
 
     })
 
